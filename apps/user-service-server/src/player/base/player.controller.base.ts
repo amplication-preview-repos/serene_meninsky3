@@ -29,6 +29,12 @@ import { PlayerUpdateInput } from "./PlayerUpdateInput";
 import { GameActionFindManyArgs } from "../../gameAction/base/GameActionFindManyArgs";
 import { GameAction } from "../../gameAction/base/GameAction";
 import { GameActionWhereUniqueInput } from "../../gameAction/base/GameActionWhereUniqueInput";
+import { PlayerGroupFindManyArgs } from "../../playerGroup/base/PlayerGroupFindManyArgs";
+import { PlayerGroup } from "../../playerGroup/base/PlayerGroup";
+import { PlayerGroupWhereUniqueInput } from "../../playerGroup/base/PlayerGroupWhereUniqueInput";
+import { PlayerLocationFindManyArgs } from "../../playerLocation/base/PlayerLocationFindManyArgs";
+import { PlayerLocation } from "../../playerLocation/base/PlayerLocation";
+import { PlayerLocationWhereUniqueInput } from "../../playerLocation/base/PlayerLocationWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -287,6 +293,223 @@ export class PlayerControllerBase {
   ): Promise<void> {
     const data = {
       gameActions: {
+        disconnect: body,
+      },
+    };
+    await this.service.updatePlayer({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/playerGroups")
+  @ApiNestedQuery(PlayerGroupFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "PlayerGroup",
+    action: "read",
+    possession: "any",
+  })
+  async findPlayerGroups(
+    @common.Req() request: Request,
+    @common.Param() params: PlayerWhereUniqueInput
+  ): Promise<PlayerGroup[]> {
+    const query = plainToClass(PlayerGroupFindManyArgs, request.query);
+    const results = await this.service.findPlayerGroups(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+
+        group: {
+          select: {
+            id: true,
+          },
+        },
+
+        id: true,
+
+        player: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/playerGroups")
+  @nestAccessControl.UseRoles({
+    resource: "Player",
+    action: "update",
+    possession: "any",
+  })
+  async connectPlayerGroups(
+    @common.Param() params: PlayerWhereUniqueInput,
+    @common.Body() body: PlayerGroupWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      playerGroups: {
+        connect: body,
+      },
+    };
+    await this.service.updatePlayer({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/playerGroups")
+  @nestAccessControl.UseRoles({
+    resource: "Player",
+    action: "update",
+    possession: "any",
+  })
+  async updatePlayerGroups(
+    @common.Param() params: PlayerWhereUniqueInput,
+    @common.Body() body: PlayerGroupWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      playerGroups: {
+        set: body,
+      },
+    };
+    await this.service.updatePlayer({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/playerGroups")
+  @nestAccessControl.UseRoles({
+    resource: "Player",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectPlayerGroups(
+    @common.Param() params: PlayerWhereUniqueInput,
+    @common.Body() body: PlayerGroupWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      playerGroups: {
+        disconnect: body,
+      },
+    };
+    await this.service.updatePlayer({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/playerLocations")
+  @ApiNestedQuery(PlayerLocationFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "PlayerLocation",
+    action: "read",
+    possession: "any",
+  })
+  async findPlayerLocations(
+    @common.Req() request: Request,
+    @common.Param() params: PlayerWhereUniqueInput
+  ): Promise<PlayerLocation[]> {
+    const query = plainToClass(PlayerLocationFindManyArgs, request.query);
+    const results = await this.service.findPlayerLocations(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        id: true,
+
+        location: {
+          select: {
+            id: true,
+          },
+        },
+
+        player: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/playerLocations")
+  @nestAccessControl.UseRoles({
+    resource: "Player",
+    action: "update",
+    possession: "any",
+  })
+  async connectPlayerLocations(
+    @common.Param() params: PlayerWhereUniqueInput,
+    @common.Body() body: PlayerLocationWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      playerLocations: {
+        connect: body,
+      },
+    };
+    await this.service.updatePlayer({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/playerLocations")
+  @nestAccessControl.UseRoles({
+    resource: "Player",
+    action: "update",
+    possession: "any",
+  })
+  async updatePlayerLocations(
+    @common.Param() params: PlayerWhereUniqueInput,
+    @common.Body() body: PlayerLocationWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      playerLocations: {
+        set: body,
+      },
+    };
+    await this.service.updatePlayer({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/playerLocations")
+  @nestAccessControl.UseRoles({
+    resource: "Player",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectPlayerLocations(
+    @common.Param() params: PlayerWhereUniqueInput,
+    @common.Body() body: PlayerLocationWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      playerLocations: {
         disconnect: body,
       },
     };

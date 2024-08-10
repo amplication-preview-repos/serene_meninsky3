@@ -20,6 +20,8 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 import { GameAction } from "../../gameAction/base/GameAction";
+import { PlayerGroup } from "../../playerGroup/base/PlayerGroup";
+import { PlayerLocation } from "../../playerLocation/base/PlayerLocation";
 
 @ObjectType()
 class Player {
@@ -70,6 +72,24 @@ class Player {
     nullable: true,
   })
   nickname!: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => [PlayerGroup],
+  })
+  @ValidateNested()
+  @Type(() => PlayerGroup)
+  @IsOptional()
+  playerGroups?: Array<PlayerGroup>;
+
+  @ApiProperty({
+    required: false,
+    type: () => [PlayerLocation],
+  })
+  @ValidateNested()
+  @Type(() => PlayerLocation)
+  @IsOptional()
+  playerLocations?: Array<PlayerLocation>;
 
   @ApiProperty({
     required: true,

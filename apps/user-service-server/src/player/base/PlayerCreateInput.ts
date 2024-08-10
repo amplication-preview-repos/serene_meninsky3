@@ -19,6 +19,8 @@ import {
 } from "class-validator";
 import { GameActionCreateNestedManyWithoutPlayersInput } from "./GameActionCreateNestedManyWithoutPlayersInput";
 import { Type } from "class-transformer";
+import { PlayerGroupCreateNestedManyWithoutPlayersInput } from "./PlayerGroupCreateNestedManyWithoutPlayersInput";
+import { PlayerLocationCreateNestedManyWithoutPlayersInput } from "./PlayerLocationCreateNestedManyWithoutPlayersInput";
 
 @InputType()
 class PlayerCreateInput {
@@ -56,6 +58,30 @@ class PlayerCreateInput {
     nullable: true,
   })
   nickname?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => PlayerGroupCreateNestedManyWithoutPlayersInput,
+  })
+  @ValidateNested()
+  @Type(() => PlayerGroupCreateNestedManyWithoutPlayersInput)
+  @IsOptional()
+  @Field(() => PlayerGroupCreateNestedManyWithoutPlayersInput, {
+    nullable: true,
+  })
+  playerGroups?: PlayerGroupCreateNestedManyWithoutPlayersInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => PlayerLocationCreateNestedManyWithoutPlayersInput,
+  })
+  @ValidateNested()
+  @Type(() => PlayerLocationCreateNestedManyWithoutPlayersInput)
+  @IsOptional()
+  @Field(() => PlayerLocationCreateNestedManyWithoutPlayersInput, {
+    nullable: true,
+  })
+  playerLocations?: PlayerLocationCreateNestedManyWithoutPlayersInput;
 }
 
 export { PlayerCreateInput as PlayerCreateInput };

@@ -16,6 +16,8 @@ import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
 import { GameActionListRelationFilter } from "../../gameAction/base/GameActionListRelationFilter";
 import { StringFilter } from "../../util/StringFilter";
+import { PlayerGroupListRelationFilter } from "../../playerGroup/base/PlayerGroupListRelationFilter";
+import { PlayerLocationListRelationFilter } from "../../playerLocation/base/PlayerLocationListRelationFilter";
 
 @InputType()
 class PlayerWhereInput {
@@ -63,6 +65,30 @@ class PlayerWhereInput {
     nullable: true,
   })
   nickname?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => PlayerGroupListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => PlayerGroupListRelationFilter)
+  @IsOptional()
+  @Field(() => PlayerGroupListRelationFilter, {
+    nullable: true,
+  })
+  playerGroups?: PlayerGroupListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => PlayerLocationListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => PlayerLocationListRelationFilter)
+  @IsOptional()
+  @Field(() => PlayerLocationListRelationFilter, {
+    nullable: true,
+  })
+  playerLocations?: PlayerLocationListRelationFilter;
 }
 
 export { PlayerWhereInput as PlayerWhereInput };

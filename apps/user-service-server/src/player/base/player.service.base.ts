@@ -10,10 +10,13 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
+
 import {
   Prisma,
   Player as PrismaPlayer,
   GameAction as PrismaGameAction,
+  PlayerGroup as PrismaPlayerGroup,
+  PlayerLocation as PrismaPlayerLocation,
 } from "@prisma/client";
 
 export class PlayerServiceBase {
@@ -50,5 +53,27 @@ export class PlayerServiceBase {
         where: { id: parentId },
       })
       .gameActions(args);
+  }
+
+  async findPlayerGroups(
+    parentId: string,
+    args: Prisma.PlayerGroupFindManyArgs
+  ): Promise<PrismaPlayerGroup[]> {
+    return this.prisma.player
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .playerGroups(args);
+  }
+
+  async findPlayerLocations(
+    parentId: string,
+    args: Prisma.PlayerLocationFindManyArgs
+  ): Promise<PrismaPlayerLocation[]> {
+    return this.prisma.player
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .playerLocations(args);
   }
 }

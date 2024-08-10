@@ -28,6 +28,10 @@ import { UpdatePlayerArgs } from "./UpdatePlayerArgs";
 import { DeletePlayerArgs } from "./DeletePlayerArgs";
 import { GameActionFindManyArgs } from "../../gameAction/base/GameActionFindManyArgs";
 import { GameAction } from "../../gameAction/base/GameAction";
+import { PlayerGroupFindManyArgs } from "../../playerGroup/base/PlayerGroupFindManyArgs";
+import { PlayerGroup } from "../../playerGroup/base/PlayerGroup";
+import { PlayerLocationFindManyArgs } from "../../playerLocation/base/PlayerLocationFindManyArgs";
+import { PlayerLocation } from "../../playerLocation/base/PlayerLocation";
 import { PlayerService } from "../player.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => Player)
@@ -152,6 +156,46 @@ export class PlayerResolverBase {
     @graphql.Args() args: GameActionFindManyArgs
   ): Promise<GameAction[]> {
     const results = await this.service.findGameActions(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [PlayerGroup], { name: "playerGroups" })
+  @nestAccessControl.UseRoles({
+    resource: "PlayerGroup",
+    action: "read",
+    possession: "any",
+  })
+  async findPlayerGroups(
+    @graphql.Parent() parent: Player,
+    @graphql.Args() args: PlayerGroupFindManyArgs
+  ): Promise<PlayerGroup[]> {
+    const results = await this.service.findPlayerGroups(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [PlayerLocation], { name: "playerLocations" })
+  @nestAccessControl.UseRoles({
+    resource: "PlayerLocation",
+    action: "read",
+    possession: "any",
+  })
+  async findPlayerLocations(
+    @graphql.Parent() parent: Player,
+    @graphql.Args() args: PlayerLocationFindManyArgs
+  ): Promise<PlayerLocation[]> {
+    const results = await this.service.findPlayerLocations(parent.id, args);
 
     if (!results) {
       return [];

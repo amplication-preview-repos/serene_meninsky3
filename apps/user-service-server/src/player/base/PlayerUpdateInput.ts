@@ -19,6 +19,8 @@ import {
 } from "class-validator";
 import { GameActionUpdateManyWithoutPlayersInput } from "./GameActionUpdateManyWithoutPlayersInput";
 import { Type } from "class-transformer";
+import { PlayerGroupUpdateManyWithoutPlayersInput } from "./PlayerGroupUpdateManyWithoutPlayersInput";
+import { PlayerLocationUpdateManyWithoutPlayersInput } from "./PlayerLocationUpdateManyWithoutPlayersInput";
 
 @InputType()
 class PlayerUpdateInput {
@@ -56,6 +58,30 @@ class PlayerUpdateInput {
     nullable: true,
   })
   nickname?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => PlayerGroupUpdateManyWithoutPlayersInput,
+  })
+  @ValidateNested()
+  @Type(() => PlayerGroupUpdateManyWithoutPlayersInput)
+  @IsOptional()
+  @Field(() => PlayerGroupUpdateManyWithoutPlayersInput, {
+    nullable: true,
+  })
+  playerGroups?: PlayerGroupUpdateManyWithoutPlayersInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => PlayerLocationUpdateManyWithoutPlayersInput,
+  })
+  @ValidateNested()
+  @Type(() => PlayerLocationUpdateManyWithoutPlayersInput)
+  @IsOptional()
+  @Field(() => PlayerLocationUpdateManyWithoutPlayersInput, {
+    nullable: true,
+  })
+  playerLocations?: PlayerLocationUpdateManyWithoutPlayersInput;
 }
 
 export { PlayerUpdateInput as PlayerUpdateInput };

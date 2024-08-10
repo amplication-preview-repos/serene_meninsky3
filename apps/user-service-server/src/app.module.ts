@@ -4,7 +4,21 @@ import { RoleModule } from "./role/role.module";
 import { ProfileModule } from "./profile/profile.module";
 import { PlayerModule } from "./player/player.module";
 import { GameActionModule } from "./gameAction/gameAction.module";
+import { PlayerLocationModule } from "./playerLocation/playerLocation.module";
+import { PlayerGroupModule } from "./playerGroup/playerGroup.module";
+import { LocationModule } from "./location/location.module";
+import { GroupModule } from "./group/group.module";
 import { GameActionModuleModule } from "./gameactionmodule/gameactionmodule.module";
+import { GameActionServiceModule } from "./gameactionservice/gameactionservice.module";
+import { GroupDomainServiceModule } from "./groupdomainservice/groupdomainservice.module";
+import { GroupModuleModule } from "./groupmodule/groupmodule.module";
+import { GroupRepositoryModule } from "./grouprepository/grouprepository.module";
+import { LocationDomainServiceModule } from "./locationdomainservice/locationdomainservice.module";
+import { LocationModuleModule } from "./locationmodule/locationmodule.module";
+import { LocationRepositoryModule } from "./locationrepository/locationrepository.module";
+import { PlayerDomainServiceModule } from "./playerdomainservice/playerdomainservice.module";
+import { PlayerModuleModule } from "./playermodule/playermodule.module";
+import { PlayerRepositoryModule } from "./playerrepository/playerrepository.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { SecretsManagerModule } from "./providers/secrets/secretsManager.module";
@@ -29,7 +43,21 @@ import { AuthModule } from "./auth/auth.module";
     ProfileModule,
     PlayerModule,
     GameActionModule,
+    PlayerLocationModule,
+    PlayerGroupModule,
+    LocationModule,
+    GroupModule,
     GameActionModuleModule,
+    GameActionServiceModule,
+    GroupDomainServiceModule,
+    GroupModuleModule,
+    GroupRepositoryModule,
+    LocationDomainServiceModule,
+    LocationModuleModule,
+    LocationRepositoryModule,
+    PlayerDomainServiceModule,
+    PlayerModuleModule,
+    PlayerRepositoryModule,
     HealthModule,
     PrismaModule,
     SecretsManagerModule,
