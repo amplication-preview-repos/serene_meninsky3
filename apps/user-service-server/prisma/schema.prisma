@@ -1,0 +1,92 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  createdAt DateTime @default(now())
+  email     String?  @unique
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     Json
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+model Role {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Profile {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Player {
+  createdAt       DateTime         @default(now())
+  email           String?
+  gameActions     GameAction[]
+  id              String           @id @default(cuid())
+  nickname        String?
+  playerGroups    PlayerGroup[]
+  playerLocations PlayerLocation[]
+  updatedAt       DateTime         @updatedAt
+}
+
+model GameAction {
+  actionType String?
+  createdAt  DateTime @default(now())
+  id         String   @id @default(cuid())
+  payload    Json?
+  player     Player?  @relation(fields: [playerId], references: [id])
+  playerId   String?
+  updatedAt  DateTime @updatedAt
+}
+
+model PlayerLocation {
+  createdAt  DateTime  @default(now())
+  id         String    @id @default(cuid())
+  location   Location? @relation(fields: [locationId], references: [id])
+  locationId String?
+  player     Player?   @relation(fields: [playerId], references: [id])
+  playerId   String?
+  updatedAt  DateTime  @updatedAt
+}
+
+model PlayerGroup {
+  createdAt DateTime @default(now())
+  group     Group?   @relation(fields: [groupId], references: [id])
+  groupId   String?
+  id        String   @id @default(cuid())
+  player    Player?  @relation(fields: [playerId], references: [id])
+  playerId  String?
+  updatedAt DateTime @updatedAt
+}
+
+model Location {
+  createdAt       DateTime         @default(now())
+  group           Group?           @relation(fields: [groupId], references: [id])
+  groupId         String?
+  id              String           @id @default(cuid())
+  name            String?
+  playerLocations PlayerLocation[]
+  updatedAt       DateTime         @updatedAt
+}
+
+model Group {
+  createdAt    DateTime      @default(now())
+  id           String        @id @default(cuid())
+  locations    Location[]
+  name         String?
+  playerGroups PlayerGroup[]
+  updatedAt    DateTime      @updatedAt
+}
